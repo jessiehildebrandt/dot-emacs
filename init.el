@@ -16,6 +16,7 @@
 ;;====================
 
 ;; Custom Bindings:
+;; [ F6 ]      -> Toggle line-wrapping
 ;; [ F7 ]      -> Toggle linum-mode
 ;; [ C-x C-b ] -> (Overwritten) Invoke ibuffer
 ;; [ C-x RET ] -> Open eshell in the current buffer
@@ -24,6 +25,9 @@
 ;; [ M-g M-g || M-g g ] -> Go to line number
 ;; [ M-. ]              -> Go to definition
 ;; [ C-/ ]              -> Alt. undo binding
+
+;; Bind a key to toggle line wrapping behavior.
+(global-set-key [f6] 'toggle-truncate-lines)
 
 ;; Bind a key to show line numbers.
 (global-set-key [f7] 'linum-mode)
