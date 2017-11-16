@@ -127,7 +127,7 @@
 
 ;; Enable the MELPA repository.
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+             '("melpa" . "http://melpa.org/packages/") t)
 
 ;; Initialize the package manager.
 (package-initialize)
