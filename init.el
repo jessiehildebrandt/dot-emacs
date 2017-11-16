@@ -368,6 +368,18 @@
    ("C-c C-<" . mc/mark-all-like-this)))
 
 ;;====================
+;; Rainbow Mode (Colorize Colors)
+;;====================
+
+;; Load Rainbow-Mode
+(use-package rainbow-mode
+  :ensure t
+  :config
+  (progn
+	(add-hook 'html-mode-hook #'rainbow-mode)
+	(add-hook 'css-mode-hook #'rainbow-mode)))
+
+;;====================
 ;; Magit (Git Interface)
 ;;====================
 
