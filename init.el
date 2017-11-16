@@ -49,7 +49,6 @@
  inhibit-startup-screen t                            ; Don't show startup screen
  inhibit-splash-screen t                             ; Don't show splash screen
  x-gtk-use-system-tooltips nil                       ; Don't use system tooltips
- desktop-restore-frames nil                          ;
  custom-file "custom.el"                             ; Use separate custom-vars file
  )
 
