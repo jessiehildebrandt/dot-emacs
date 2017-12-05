@@ -81,9 +81,11 @@
 		    :box '(:line-width -1 :color "azure4"))
 
 ;; Set the default styling rules to use.
-(setq-default tab-width 4
-	      c-basic-offset 4
-	      c-default-style "linux")
+(setq-default
+ tab-width 4
+ c-basic-offset 4
+ c-default-style "bsd"
+)
 
 ;; Add a hook to trailing whitespaces before saving a file.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
