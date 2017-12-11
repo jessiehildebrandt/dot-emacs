@@ -71,14 +71,10 @@
  uniquify-ignore-buffers-re "^\\*"    ; Ignore special buffers
  )
 
-;; Set up face styling for the default and mode-line faces.
+;; Set up face styling for the default face.
 (set-face-attribute 'default nil
 		    :family "Terminus (TTF)"
 		    :height 90)
-(set-face-attribute 'mode-line nil
-		    :foreground "black"
-		    :background "gray76"
-		    :box '(:line-width -1 :color "azure4"))
 
 ;; Set the default styling rules to use.
 (setq-default
@@ -93,12 +89,6 @@
 ;;====================
 ;; Misc. Mode Config
 ;;====================
-
-;; Disable Modes
-(mapc (lambda (mode) (funcall mode -1))
-      '(
-	tool-bar-mode  ; Displays graphical tool bar.
-	))
 
 ;; Enable Modes
 (mapc (lambda (mode) (funcall mode 1))
@@ -116,6 +106,20 @@
  show-paren-delay 0.0             ; (show-paren-mode) - Parenthesis highlighting delay
  visual-line-fringe-indicators t  ; (visual-line-mode) - Shows fringe indicators for wrapping
  )
+
+;;====================
+;; Graphical Mode Config
+;;====================
+
+;; Style the mode line and turn off the toolbar when in graphical mode.
+(if (display-graphic-p)
+	(progn
+	  (set-face-attribute 'mode-line nil
+						  :foreground "black"
+						  :background "gray76"
+						  :box '(:line-width -1 :color "azure4"))
+	  (tool-bar-mode 0)
+	  ))
 
 ;;====================
 ;; Package Manager
