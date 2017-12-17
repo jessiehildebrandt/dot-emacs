@@ -50,7 +50,7 @@
  inhibit-splash-screen t                             ; Don't show splash screen
  x-gtk-use-system-tooltips nil                       ; Don't use system tooltips
  mouse-wheel-progressive-speed nil                   ; Don't accelerate mouse scrolling
- custom-file "custom.el"                             ; Use separate custom-vars file
+ custom-file "~/.emacs.d/custom.el"                  ; Use separate custom-vars file
  )
 
 ;; Set backup behavior.
