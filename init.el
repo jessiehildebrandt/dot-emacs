@@ -74,15 +74,15 @@
 
 ;; Set up face styling for the default face.
 (set-face-attribute 'default nil
-		    :family "Terminus (TTF)"
-		    :height 90)
+					:family "Terminus (TTF)"
+					:height 90)
 
 ;; Set the default styling rules to use.
 (setq-default
  tab-width 4
  c-basic-offset 4
  c-default-style "bsd"
-)
+ )
 
 ;; Add a hook to trailing whitespaces before saving a file.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -94,13 +94,13 @@
 ;; Enable Modes
 (mapc (lambda (mode) (funcall mode 1))
       '(
-	global-subword-mode      ; Treats camel-case names as multiple words
-	global-visual-line-mode  ; Enables whole-word line wrapping
-	ido-mode                 ; Better directory and buffer completion
-	column-number-mode       ; Show column number in the mode line
-	show-paren-mode          ; Highlight matching parenthesis
-	size-indication-mode     ; Show buffer size in the mode line
-	))
+		global-subword-mode      ; Treats camel-case names as multiple words
+		global-visual-line-mode  ; Enables whole-word line wrapping
+		ido-mode                 ; Better directory and buffer completion
+		column-number-mode       ; Show column number in the mode line
+		show-paren-mode          ; Highlight matching parenthesis
+		size-indication-mode     ; Show buffer size in the mode line
+		))
 
 ;; Mode Configuration
 (setq
@@ -197,8 +197,8 @@
   ("\\.rs\\'" . rust-mode)
   :config
   (set-face-attribute 'rust-string-interpolation-face nil
-		      :slant 'normal
-		      :foreground "red2"))
+					  :slant 'normal
+					  :foreground "red2"))
 
 ;; Load Fish Mode
 ;; (Associated files: .fish)
