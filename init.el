@@ -321,6 +321,15 @@
   ("M-x" . smex))
 
 ;;====================
+;; Undo Tree
+;;====================
+
+;; Load Undo Tree
+(use-package undo-tree
+  :ensure t
+  :init (global-undo-tree-mode))
+
+;;====================
 ;; Treemacs (File Browser)
 ;;====================
 
