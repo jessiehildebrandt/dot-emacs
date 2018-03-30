@@ -51,6 +51,9 @@
  x-gtk-use-system-tooltips nil                       ; Don't use system tooltips
  mouse-wheel-progressive-speed nil                   ; Don't accelerate mouse scrolling
  custom-file "~/.emacs.d/custom.el"                  ; Use separate custom-vars file
+ scroll-preserve-screen-position 1                   ; Don't move cursor while scrolling
+ scroll-conservatively 100000                        ; Scroll one line at a time
+ scroll-margin 6                                     ; Maintain a margin while scrolling
  )
 
 ;; Set backup behavior.
