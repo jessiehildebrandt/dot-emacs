@@ -16,10 +16,12 @@
 ;;====================
 
 ;; Custom Bindings:
-;; [ F6 ]      -> Toggle line-wrapping
-;; [ F7 ]      -> Toggle linum-mode
-;; [ C-x C-b ] -> (Overwritten) Invoke ibuffer
-;; [ C-x RET ] -> Open eshell in the current buffer
+;; [ F6 ]              -> Toggle line-wrapping
+;; [ F7 ]              -> Toggle linum-mode
+;; [ C-x C-b ]         -> (Overwritten) Invoke ibuffer
+;; [ C-x RET ]         -> Open eshell in the current buffer
+;; [ C-c <direction> ] -> Focus on the window in <direction>
+;; [ M-n / M-p]        -> Scroll up/down by one line
 
 ;; Default but Useful:
 ;; [ M-g M-g || M-g g ] -> Go to line number
@@ -37,6 +39,26 @@
 
 ;; Bind a key to open up eshell.
 (global-set-key (kbd "C-x RET") 'eshell)
+
+;; Bind keys to switch windows easier.
+(global-set-key (kbd "C-c <up>") 'windmove-up)
+(global-set-key (kbd "C-c <down>") 'windmove-down)
+(global-set-key (kbd "C-c <left>") 'windmove-left)
+(global-set-key (kbd "C-c <right>") 'windmove-right)
+
+;; Bind keys to scroll up/down by one line
+(defun scroll-up-line-nm ()
+  (interactive)
+  (setq scroll-margin 0)
+  (scroll-up-line)
+  (setq scroll-margin 6))
+(defun scroll-down-line-nm ()
+  (interactive)
+  (setq scroll-margin 0)
+  (scroll-down-line)
+  (setq scroll-margin 6))
+(global-set-key (kbd "M-n") 'scroll-up-line-nm)
+(global-set-key (kbd "M-p") 'scroll-down-line-nm)
 
 ;;====================
 ;; Variables/Basic Config.
