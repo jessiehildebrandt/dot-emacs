@@ -134,7 +134,7 @@
  )
 
 ;;====================
-;; Graphical Mode Config
+;; Graphical/Term Mode Config
 ;;====================
 
 ;; Style the mode line and turn off the toolbar when in graphical mode.
@@ -145,6 +145,12 @@
 						  :background "gray76"
 						  :box '(:line-width -1 :color "azure4"))
 	  (tool-bar-mode 0)
+	  ))
+
+;; Load the "manoj-dark" default theme when in term mode.
+(if (not (display-graphic-p) )
+	(progn
+	  (load-theme 'manoj-dark)
 	  ))
 
 ;;====================
