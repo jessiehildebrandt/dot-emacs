@@ -378,9 +378,12 @@
      treemacs-git-integration t
      treemacs-show-hidden-files nil
      )
-    (treemacs-follow-mode t))
+    (treemacs-follow-mode t)
+	(set-face-attribute 'treemacs-root-face nil
+						:height 1.0
+						:underline nil))
   :bind
-  (([f8] . treemacs-toggle)
+  (([f8] . treemacs)
    ("C-c t" . treemacs-select-window)))
 
 ;;====================
