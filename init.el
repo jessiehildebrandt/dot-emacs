@@ -140,17 +140,7 @@
 ;; Style the mode line and turn off the toolbar when in graphical mode.
 (if (display-graphic-p)
 	(progn
-	  (set-face-attribute 'mode-line nil
-						  :foreground "black"
-						  :background "gray76"
-						  :box '(:line-width -1 :color "azure4"))
 	  (tool-bar-mode 0)
-	  ))
-
-;; Load the "manoj-dark" default theme when in term mode.
-(if (not (display-graphic-p) )
-	(progn
-	  (load-theme 'manoj-dark)
 	  ))
 
 ;;====================
@@ -197,6 +187,16 @@
 ;; EXTERNAL PACKAGE CONFIGURATION
 ;;
 ;;========================================
+
+;;====================
+;; Themes
+;;====================
+
+;; Load "Tomorrow Night"
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :config
+  (load-theme `sanityinc-tomorrow-night t))
 
 ;;====================
 ;; Language Modes
