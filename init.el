@@ -127,6 +127,12 @@
 		size-indication-mode     ; Show buffer size in the mode line
 		))
 
+;; Disable Modes
+(mapc (lambda (mode) (funcall mode 0))
+	  `(
+		menu-bar-mode  ; Disable the menu bar
+		))
+
 ;; Mode Configuration
 (setq
  show-paren-delay 0.0             ; (show-paren-mode) - Parenthesis highlighting delay
@@ -137,10 +143,11 @@
 ;; Graphical/Term Mode Config
 ;;====================
 
-;; Style the mode line and turn off the toolbar when in graphical mode.
+;; Turn off the toolbar and scroll bar when in graphical mode.
 (if (display-graphic-p)
 	(progn
 	  (tool-bar-mode 0)
+	  (scroll-bar-mode 0)
 	  ))
 
 ;;====================
