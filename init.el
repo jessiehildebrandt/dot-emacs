@@ -18,7 +18,8 @@
 
 ;; Custom Bindings:
 ;; [ F6 ]              -> Toggle line-wrapping
-;; [ F7 ]              -> Toggle linum-mode
+;; [ F7 ]              -> Toggle linum-mode/display-line-numbers-mode
+;; [ F10 ]             -> (Overwritten) Open the menubar in a minibuffer
 ;; [ C-x C-b ]         -> (Overwritten) Invoke ibuffer
 ;; [ C-x RET ]         -> Open eshell in the current buffer
 ;; [ C-c <direction> ] -> Focus on the window in <direction>
@@ -33,10 +34,15 @@
 (global-set-key [f6] 'toggle-truncate-lines)
 
 ;; Bind a key to show line numbers.
-(global-set-key [f7] 'linum-mode)
+(if (>= emacs-major-version 26)
+	(global-set-key [f7] 'display-line-numbers-mode)
+  (global-set-key [f7] 'linum-mode))
 
-;; Replace the list-buffers keybind to invoke ibuffer.
+;; Replace the list-buffers keybind with an ibuffer keybind.
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+;; Replace the menu-bar-open keybind with a tmm-menubar keybind.
+(global-set-key [f10] 'tmm-menubar)
 
 ;; Bind a key to open up eshell.
 (global-set-key (kbd "C-x RET") 'eshell)
