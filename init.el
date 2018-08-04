@@ -185,6 +185,13 @@
 ;; Init File
 ;;====================
 
+;; Define a function that will pull in the latest version of this init file.
+(defun update-init-file ()
+  "Download the latest init file from jessieh.net."
+  (interactive)
+  (message "Updating init file...")
+  (url-copy-file "https://jessieh.net/emacs" (concat user-emacs-directory "init.el") t))
+
 ;; Make sure that the latest version of the init file is always byte-compiled.
 (if (file-newer-than-file-p
 	 (concat user-emacs-directory "init.el")
