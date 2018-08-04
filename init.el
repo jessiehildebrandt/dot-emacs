@@ -179,8 +179,18 @@
   (package-install 'use-package))
 
 ;; Require use-package.
-(eval-when-compile
-  (require 'use-package))
+(require 'use-package)
+
+;;====================
+;; Init File
+;;====================
+
+;; Make sure that the latest version of the init file is always byte-compiled.
+(if (file-newer-than-file-p
+	 (concat user-emacs-directory "init.el")
+	 (concat user-emacs-directory "init.elc"))
+	(save-restriction
+	  (byte-compile-file (concat user-emacs-directory "init.el"))))
 
 ;;====================
 ;; Garbage Collector
