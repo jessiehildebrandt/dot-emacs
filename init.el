@@ -206,11 +206,11 @@
 ;; Increase the garbage collection threshold to 100MB for a faster startup time.
 (setq-default gc-cons-threshold 100000000)
 
-;; Restore it to 20MB after 5 seconds.
-(run-with-idle-timer
- 5 nil
- (lambda ()
-   (setq gc-cons-threshold 20000000)))
+;; Restore it to 8MB after initialization is finished.
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 8000000)))
+
+;; Collect all garbage whenever Emacs loses focus.
+(add-hook 'focus-out-hook #'garbage-collect)
 
 
 ;;========================================
