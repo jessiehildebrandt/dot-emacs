@@ -12,6 +12,9 @@
 ;;
 ;;========================================
 
+;; Enable lexical binding here for faster startup times
+;; -*- lexical-binding: t -*-
+
 ;;====================
 ;; Custom Keybinds
 ;;====================
