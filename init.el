@@ -1,3 +1,5 @@
+ ;;; init.el --- My custom Emacs configuration file. -*- lexical-binding: t; -*-
+
 ;;================================================================================
 ;;
 ;; Jessie Hildebrandt's
@@ -12,90 +14,46 @@
 ;;
 ;;========================================
 
-;; Enable lexical binding here for faster startup times
-;; -*- lexical-binding: t -*-
-
 ;;====================
-;; Custom Keybinds
+;; Garbage Collector
 ;;====================
 
-;; Custom Bindings:
-;; [ F6 ]              -> Toggle line-wrapping
-;; [ F7 ]              -> Toggle linum-mode/display-line-numbers-mode
-;; [ F10 ]             -> (Overwritten) Open the menubar in a minibuffer
-;; [ C-x C-b ]         -> (Overwritten) Invoke ibuffer
-;; [ C-x RET ]         -> Open eshell in the current buffer
-;; [ C-c <direction> ] -> Focus on the window in <direction>
-;; [ M-n / M-p]        -> Scroll up/down by one line
+;; Increase the garbage collection threshold to 100MB for a faster startup time.
+(setq-default gc-cons-threshold 100000000
+              gc-cons-percentage 0.6)
 
-;; Default but Useful:
-;; [ M-g M-g || M-g g ] -> Go to line number
-;; [ M-. ]              -> Go to definition
-;; [ C-/ ]              -> Alt. undo binding
+;; Restore it to 8MB after initialization is finished.
+(add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold 8000000
+                                               gc-cons-percentage 0.1)))
 
-;; Bind a key to toggle line wrapping behavior.
-(global-set-key [f6] 'toggle-truncate-lines)
-
-;; Bind a key to show line numbers.
-(if (>= emacs-major-version 26)
-	(global-set-key [f7] 'display-line-numbers-mode)
-  (global-set-key [f7] 'linum-mode))
-
-;; Replace the list-buffers keybind with an ibuffer keybind.
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-;; Replace the menu-bar-open keybind with a tmm-menubar keybind.
-(global-set-key [f10] 'tmm-menubar)
-
-;; Bind a key to open up eshell.
-(global-set-key (kbd "C-x RET") 'eshell)
-
-;; Bind keys to switch windows easier.
-(global-set-key (kbd "C-c <up>") 'windmove-up)
-(global-set-key (kbd "C-c <down>") 'windmove-down)
-(global-set-key (kbd "C-c <left>") 'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
-
-;; Bind keys to scroll up/down by one line
-(defun scroll-up-line-nm ()
-  (interactive)
-  (setq scroll-margin 0)
-  (scroll-up-line)
-  (setq scroll-margin 6))
-(defun scroll-down-line-nm ()
-  (interactive)
-  (setq scroll-margin 0)
-  (scroll-down-line)
-  (setq scroll-margin 6))
-(global-set-key (kbd "M-n") 'scroll-up-line-nm)
-(global-set-key (kbd "M-p") 'scroll-down-line-nm)
+;; Collect all garbage whenever Emacs loses focus.
+(add-hook 'focus-out-hook #'garbage-collect)
 
 ;;====================
 ;; Variables/Basic Config.
 ;;====================
 
 ;; Basic variable configuration.
-(setq
- frame-title-format '("Emacs@" system-name " - %b")  ; Window title formatting
- indicate-empty-lines t                              ; Highlight empty lines
- inhibit-startup-screen t                            ; Don't show startup screen
- inhibit-splash-screen t                             ; Don't show splash screen
- x-gtk-use-system-tooltips nil                       ; Don't use system tooltips
- mouse-wheel-progressive-speed nil                   ; Don't accelerate mouse scrolling
- custom-file "~/.emacs.d/custom.el"                  ; Use separate custom-vars file
- scroll-preserve-screen-position 1                   ; Don't move cursor while scrolling
- scroll-conservatively 100000                        ; Scroll one line at a time
- scroll-margin 6                                     ; Maintain a margin while scrolling
+(setq-default
+ initial-scratch-message ""          ; Remove initial message
+ frame-title-format '("Emacs - %b")  ; Window title formatting
+ truncate-lines 1                    ; Truncate lines instead of wrapping
+ inhibit-startup-screen t            ; Don't show startup screen
+ inhibit-splash-screen t             ; Don't show splash screen
+ x-gtk-use-system-tooltips nil       ; Don't use system tooltips
+ mouse-wheel-progressive-speed nil   ; Don't accelerate mouse scrolling
+ scroll-preserve-screen-position 1   ; Don't move cursor while scrolling
+ custom-file "~/.emacs.d/custom.el"  ; Use separate custom-vars file
  )
 
 ;; Set backup behavior.
-(setq
+(setq-default
  backup-directory-alist '(("." . "~/.emacs.d/backup"))  ; Set backup file directory
  backup-by-copying t                                    ; Don't delink hardlinks
  version-control t                                      ; Use version numbers on backups
  delete-old-versions t                                  ; Do not keep old backups
- kept-new-versions 20                                   ; Keep 20 new versions
- kept-old-versions 5                                    ; Keep 5 old versions
+ kept-new-versions 5                                    ; Keep 5 new versions
+ kept-old-versions 3                                    ; Keep 3 old versions
  )
 
 ;; Enable uniquify for better unique buffer names.
@@ -107,17 +65,26 @@
  uniquify-ignore-buffers-re "^\\*"    ; Ignore special buffers
  )
 
-;; Set up face styling for the default face.
-(set-face-attribute 'default nil
-					:family "Terminus (TTF)"
-					:height 90)
-
 ;; Set the default styling rules to use.
 (setq-default
+ indent-tabs-mode nil
  tab-width 4
  c-basic-offset 4
  c-default-style "bsd"
  )
+
+;; Disable some unnecessary byte-compiler warnings.
+(setq byte-compile-warnings '(not
+                              free-vars
+                              unresolved
+                              noruntime
+                              lexical
+                              make-local))
+
+;; Temporarily disable file handler checking during startup to save time.
+(defvar temp--file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+(add-hook 'emacs-startup-hook (lambda () (setq file-name-handler-alist temp--file-name-handler-alist)))
 
 ;; Add a hook to trailing whitespaces before saving a file.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -129,19 +96,23 @@
 ;; Enable Modes
 (mapc (lambda (mode) (funcall mode 1))
       '(
-		global-subword-mode      ; Treats camel-case names as multiple words
-		global-visual-line-mode  ; Enables whole-word line wrapping
-		ido-mode                 ; Better directory and buffer completion
-		column-number-mode       ; Show column number in the mode line
-		show-paren-mode          ; Highlight matching parenthesis
-		size-indication-mode     ; Show buffer size in the mode line
-		))
+        global-subword-mode      ; Treats camel-case names as multiple words
+        global-auto-revert-mode  ; Automatically revert buffers on file changes
+        global-hl-line-mode      ; Highlight the currently-selected line
+        ido-mode                 ; Better directory and buffer completion
+        column-number-mode       ; Show column number in the mode line
+        show-paren-mode          ; Highlight matching parenthesis
+        size-indication-mode     ; Show buffer size in the mode line
+        ))
 
 ;; Disable Modes
 (mapc (lambda (mode) (funcall mode 0))
-	  `(
-		menu-bar-mode  ; Disable the menu bar
-		))
+      `(
+        menu-bar-mode  ; Disable the menu bar
+        ))
+
+;; Hooked Modes
+(add-hook 'prog-mode-hook 'electric-pair-local-mode)  ; Automatic delimiter pairing
 
 ;; Mode Configuration
 (setq
@@ -150,70 +121,211 @@
  )
 
 ;;====================
-;; Graphical/Term Mode Config
+;; Graphical Mode Config
 ;;====================
 
-;; Turn off the toolbar and scroll bar when in graphical mode.
-(if (display-graphic-p)
-	(progn
-	  (tool-bar-mode 0)
-	  (scroll-bar-mode 0)
-	  ))
+;; Define a function that will configure graphical Emacs frames.
+(defun configure-graphic-frame (frame)
+  "Set up graphical Emacs frame FRAME."
+  (when (display-graphic-p)
+    (select-frame frame)
+    (setq winid (frame-parameter frame 'outer-window-id))
+    (call-process-shell-command
+     (concat "xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT dark -id " winid))
+    (tool-bar-mode 0)
+    (scroll-bar-mode 0)))
+
+;; Hook the frame configuration function into all newly-created graphical frames.
+(when (display-graphic-p)
+  (progn
+    (add-hook 'window-setup-hook (lambda () (configure-graphic-frame (selected-frame))))
+    (add-hook 'after-make-frame-functions #'configure-graphic-frame)
+    (configure-graphic-frame (selected-frame))))
 
 ;;====================
 ;; Package Manager
 ;;====================
 
-;; Require the package manager.
-(require 'package)
-(setq package-enable-at-startup nil)
-(setq package-check-signature nil)
+;; Configure the package manager.
+(eval-and-compile
 
-;; Enable the MELPA repository.
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+  ;; Configure the package manager and use-package settings.
+  (setq load-prefer-newer t
+        package-user-dir (concat user-emacs-directory "elpa")
+        package-check-signature nil
+        package-enable-at-startup nil
+        package--init-file-ensured t
+        use-package-always-ensure t
+        use-package-always-defer t)
 
-;; Initialize the package manager.
-(package-initialize)
+  ;; Make sure that the package directory exists to prevent errors.
+  (unless (file-directory-p package-user-dir)
+    (make-directory package-user-dir t))
 
-;; Check for use-package. Install it if not already present.
-(unless (package-installed-p 'use-package)
+  ;; Manually assemble the load-path during startup to save time.
+  (setq load-path (append load-path (directory-files package-user-dir t "^[^.]" t))))
+
+;; Initialize the package management system (only at compile time).
+(eval-when-compile
+
+  ;; Require the package manager.
+  (require 'package)
+
+  ;; Enable the MELPA repository.
+  (unless (assoc-default "melpa" package-archives)
+    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+
+  ;; Initialize the package manager.
+  (package-initialize)
   (package-refresh-contents)
-  (package-install 'use-package))
 
-;; Require use-package.
-(require 'use-package)
+  ;; Check for use-package. Install it if not already present.
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (require 'use-package))
+
+;;====================
+;; Key Bindings
+;;====================
+
+;; Custom Bindings:
+;; [ F6 ]                -> Toggle line-wrapping
+;; [ F7 ]                -> Toggle linum-mode/display-line-numbers-mode
+;; [ F10 ]               -> (Overwritten) Open the menubar in a minibuffer
+;; [ C-z ]               -> (Overwritten) Undo
+;; [ C-x C-b ]           -> (Overwritten) Invoke ibuffer
+;; [ C-c C-o ]           -> Focus on minibuffer window
+;; [ C-c C-r ]           -> Revert buffer without confirmation
+;; [ C-x RET ]           -> Open eshell in the current buffer
+;; [ C-c C-<i,j,k,l> ]   -> Focus on the window in <direction>
+;; [ M-n / M-p ]         -> Scroll up/down by one line
+;; [ C-M-n / C-M-p ]     -> Move forward/back by one paragraph
+
+;; Require bind-key. (Bundled with use-package)
+(require 'bind-key)
+
+;; Bind a key to toggle line wrapping behavior.
+(bind-key [f6] 'visual-line-mode)
+
+;; Bind a key to show line numbers.
+(bind-key [f7] 'linum-mode)
+(when (>= emacs-major-version 26)
+  (bind-key [f7] 'display-line-numbers-mode))
+
+;; Replace the menu-bar-open keybind with a tmm-menubar keybind.
+(bind-key [f10] 'tmm-menubar)
+
+;; Replace the suspend-emacs keybind with a (much less annoying) undo keybind.
+(bind-key "C-z" 'undo)
+
+;; Replace the list-buffers keybind with an ibuffer keybind.
+(bind-key "C-x C-b" 'ibuffer)
+
+;; Bind a key to switch to the minibuffer.
+(defun switch-to-minibuffer-window ()
+  "Switch to the minibuffer window (if active)."
+  (interactive)
+  (when (active-minibuffer-window)
+    (select-window (active-minibuffer-window))))
+(bind-key "C-c C-o" 'switch-to-minibuffer-window)
+
+;; Bind a key to revert the buffer without confirmation.
+(defun revert-buffer-no-confirm ()
+  "Revert the current buffer without confirmation."
+  (interactive)
+  (if (not (buffer-modified-p))
+      (revert-buffer :ignore-auto :noconfirm)
+    (when (yes-or-no-p "The contents of this buffer have been modified. Really revert? ")
+      (revert-buffer :ignore-auto :noconfirm))))
+(bind-key "C-c C-r" 'revert-buffer-no-confirm)
+
+;; Bind a key to open up eshell.
+(bind-key "C-x RET" 'eshell)
+
+;; Bind keys to switch windows easier.
+(bind-key* "C-c C-i" 'windmove-up)
+(bind-key* "C-c C-k" 'windmove-down)
+(bind-key* "C-c C-j" 'windmove-left)
+(bind-key* "C-c C-l" 'windmove-right)
+
+;; Bind keys to scroll up/down by one line
+(bind-key "M-n" 'scroll-up-line)
+(bind-key "M-p" 'scroll-down-line)
+
+;; Bind keys to move forward/back by one paragraph
+(bind-key "C-M-n" 'forward-paragraph)
+(bind-key "C-M-p" 'backward-paragraph)
 
 ;;====================
 ;; Init File
 ;;====================
 
-;; Define a function that will pull in the latest version of this init file.
 (defun update-init-file ()
   "Download the latest init file from jessieh.net."
   (interactive)
-  (message "Updating init file...")
-  (url-copy-file "https://jessieh.net/emacs" (concat user-emacs-directory "init.el") t))
+  (when (yes-or-no-p "Download latest init file from jessieh.net? ")
+    (message "Updating init file...")
+    (url-copy-file "https://jessieh.net/emacs" (concat user-emacs-directory "init.el"))))
 
-;; Make sure that the latest version of the init file is always byte-compiled.
+(defun byte-compile-init-file ()
+  "Byte compile the init file."
+  (interactive)
+
+  (save-restriction
+    (message "Byte-compiling init file...")
+    (byte-compile-file (concat user-emacs-directory "init.el"))))
+
+(defun refresh-init-file-packages ()
+  "Redownload all packages that have been configured in the init file."
+  (interactive)
+  (when (yes-or-no-p "Redownload and reconfigure packages? ")
+    (message "Refreshing packages...")
+    (delete-directory package-user-dir t)
+    (byte-compile-init-file)))
+
+;; Make sure that this init file is byte-compiled whenever it changes.
 (if (file-newer-than-file-p
-	 (concat user-emacs-directory "init.el")
-	 (concat user-emacs-directory "init.elc"))
-	(save-restriction
-	  (byte-compile-file (concat user-emacs-directory "init.el"))))
+     (concat user-emacs-directory "init.el")
+     (concat user-emacs-directory "init.elc"))
+    (add-hook 'emacs-startup-hook 'byte-compile-init-file))
+
+
+;;========================================
+;;
+;; THEME CONFIGURATION
+;;
+;;========================================
 
 ;;====================
-;; Garbage Collector
+;; Default Face
 ;;====================
 
-;; Increase the garbage collection threshold to 100MB for a faster startup time.
-(setq-default gc-cons-threshold 100000000)
+;; Set up styling for the default face.
+(set-face-attribute 'default nil
+                    :family "Hack"
+                    :height 90)
 
-;; Restore it to 8MB after initialization is finished.
-(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 8000000)))
+;;====================
+;; Theme
+;;====================
 
-;; Collect all garbage whenever Emacs loses focus.
-(add-hook 'focus-out-hook #'garbage-collect)
+;; Load "mood-one"
+ (use-package mood-one-theme
+   :demand
+   t
+   :config
+   (mood-one-theme-enable-fringe-bmps))
+
+;;====================
+;; Mode-Line
+;;====================
+
+;; Load "mood-line"
+(use-package mood-line
+  :demand
+  t
+  :config
+  (mood-line-activate))
 
 
 ;;========================================
@@ -223,33 +335,21 @@
 ;;========================================
 
 ;;====================
-;; Themes
-;;====================
-
-;; Load "Tomorrow Night"
-(use-package color-theme-sanityinc-tomorrow
-  :ensure t
-  :config
-  (load-theme `sanityinc-tomorrow-night t))
-
-;;====================
 ;; Language Modes
 ;;====================
 
 ;; Currently Supported:
-;; Lua, PHP, Rust, Fish, OCaml
+;; Lua, PHP, Rust, Fish
 
 ;; Load Lua Mode
 ;; (Associated files: .lua)
 (use-package lua-mode
-  :ensure t
   :mode
   ("\\.lua\\'" . lua-mode))
 
 ;; Load PHP Mode
 ;; (Associated files: .php (HTML-Mode), .inc)
 (use-package php-mode
-  :ensure t
   :mode
   (("\\.php\\'" . html-mode)
    ("\\.inc\\'" . php-mode)))
@@ -257,74 +357,49 @@
 ;; Load Rust Mode
 ;; (Associated files: .rs)
 (use-package rust-mode
-  :ensure t
   :mode
-  ("\\.rs\\'" . rust-mode)
-  :config
-  (set-face-attribute 'rust-string-interpolation-face nil
-					  :slant 'normal
-					  :foreground "red2"))
+  ("\\.rs\\'" . rust-mode))
 
 ;; Load Fish Mode
 ;; (Associated files: .fish)
 (use-package fish-mode
-  :ensure t
   :mode
   ("\\.fish\\'" . fish-mode))
-
-;; Load Tuareg (OCaml Mode)
-(use-package tuareg
-  :ensure t
-  :mode
-  ("\\.ml\\'" . tuareg-mode))
-
-;;====================
-;; Auto-Package-Update
-;;====================
-
-;; Interactive Functions:
-;; (update-packages) -> Automatically update all packages
-
-;; Load Auto-Package-Update
-(use-package auto-package-update
-  :ensure t
-  :config
-  (defun update-packages ()
-    "Automatically update all installed packages."
-    (interactive)
-    (message "Updating packages...")
-    (auto-package-update-now)))
 
 ;;====================
 ;; Exec-Path-From-Shell (PATH Setting)
 ;;====================
 
-;; Bindings:
-;; None
-
-;; Load Exec-Path-From-Shell
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (progn
-    (setq exec-path-from-shell-arguments '("-l"))
+;; Load Exec-Path-From-Shell (Non-Windows systems only)
+(unless (string-equal system-type "windows-nt")
+  (use-package exec-path-from-shell
+    :demand
+    t
+    :custom
+    (exec-path-from-shell-arguments '("-l"))
+    :config
     (add-to-list 'exec-path-from-shell-variables '"RUST_SRC_PATH")
     (exec-path-from-shell-initialize)))
 
 ;;====================
 ;; Racer (Rust Completion)
-;; ===================
-
-;; Bindings:
-;; None
+;;====================
 
 ;; Load Racer
 (use-package racer
-  :ensure t
-  :config
-  (progn
-    (setq racer-rust-src-path nil)
-    (add-hook 'rust-mode-hook #'racer-mode)))
+  :custom
+  (racer-rust-src-path nil)
+  :hook
+  (rust-mode . racer-mode))
+
+;;====================
+;; Package-Lint (Elisp Package Linter)
+;;====================
+
+;; Load Package-Lint
+(use-package package-lint
+  :commands
+  (package-lint-current-buffer))
 
 ;;====================
 ;; FlyCheck (Syntax Checker)
@@ -335,41 +410,74 @@
 
 ;; Load FlyCheck
 (use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode)
-  :config (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+  :hook
+  (prog-mode . flycheck-mode)
+  (c++-mode-hook . (lambda () (setq flycheck-clang-standard "c++17")))
   :bind
   ("C-c e" . flycheck-list-errors))
 
 ;; [Rust]
 ;; Load FlyCheck-Rust
 (use-package flycheck-rust
-  :ensure t
-  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  :after
+  (flycheck)
+  :hook
+  (flycheck-mode-hook . flycheck-rust-setup))
+
+;; [Elisp Packages]
+;; Load FlyCheck-Package
+(use-package flycheck-package
+  :after
+  (flycheck)
+  :hook
+  (flycheck-mode-hook . flycheck-package-setup))
 
 ;;====================
 ;; Company (Autocompletion)
 ;;====================
 
-;; Bindings:
-;; None
-
 ;; Load Company
 (use-package company
-  :ensure t
-  :init (global-company-mode)
-  :config (setq company-idle-delay 0.1))
+  :demand
+  t
+  :config
+  (global-company-mode)
+  :custom
+  (company-idle-delay 0.3))
 
 ;; [Lua]
 ;; Load Company-Lua
 (use-package company-lua
-  :ensure t
-  :config (add-hook 'lua-mode-hook #'my-lua-mode-company-init))
+  :after
+  (company)
+  :hook
+  (lua-mode my-lua-mode-company-init))
+
+;; [PHP]
+;; Load Company-PHP
+(use-package company-php
+  :after
+  (company))
 
 ;; [Rust]
 ;; Load Company-Racer
 (use-package company-racer
-  :ensure t)
+  :after
+  (company))
+
+;;====================
+;; Smart-Tabs-Mode (Superior Indentation Method)
+;;====================
+
+;; Load Smart-Tabs-Mode
+(use-package smart-tabs-mode
+  :demand
+  t
+  :config
+  (smart-tabs-insinuate 'c 'c++ 'java
+                        'javascript
+                        'cperl 'python
+                        'ruby 'nxml))
 
 ;;====================
 ;; Smex (M-x Autocompletion)
@@ -380,8 +488,8 @@
 
 ;; Load Smex
 (use-package smex
-  :ensure t
-  :config (smex-initialize)
+  :config
+  (smex-initialize)
   :bind
   ("M-x" . smex))
 
@@ -389,36 +497,64 @@
 ;; Undo Tree
 ;;====================
 
+;; Bindings:
+;; [ C-x u ] (Overwritten) -> Open Undo Tree
+
 ;; Load Undo Tree
 (use-package undo-tree
-  :ensure t
-  :init (global-undo-tree-mode))
+  :demand
+  t
+  :config
+  (global-undo-tree-mode))
 
 ;;====================
-;; Treemacs (File Browser)
+;; Diff-HL (VCS Diff Highlighting)
+;;====================
+
+;; Load Diff-HL
+(use-package diff-hl
+  :demand
+  t
+  :hook
+  (diff-hl-mode-hook . diff-hl-flydiff-mode)
+  :config
+  (global-diff-hl-mode))
+
+;;====================
+;; Neotree (File Browser)
 ;;====================
 
 ;; Bindings:
-;; [ F8 ]    -> Toggle Treemacs window
-;; [ C-c t ] -> Switch to Treemacs window
+;; [ F5 ]    -> (Overwritten) Do nothing (neotree-mode)
+;; [ F6 ]    -> (Overwritten) Do nothing (neotree-mode)
+;; [ F7 ]    -> (Overwritten) Do nothing (neotree-mode)
+;; [ F8 ]    -> Toggle Neotree window
+;; [ C-c t ] -> Switch to Neotree window
 
-;; Load Treemacs
-(use-package treemacs
-  :ensure t
+;; Load Neotree
+(use-package neotree
+  :custom
+  (neo-show-updir-line nil)
+  (neo-window-width 30)
+  (neo-theme 'nerd)
   :config
-  (progn
-    (setq
-     treemacs-is-never-other-window t
-     treemacs-git-integration t
-     treemacs-show-hidden-files nil
-     )
-    (treemacs-follow-mode t)
-	(set-face-attribute 'treemacs-root-face nil
-						:height 1.0
-						:underline nil))
+  (defun neotree--setup (&rest _)
+    (make-local-variable 'auto-hscroll-mode)
+    (setq mode-line-format nil
+          line-spacing 3
+          tab-width 1
+          truncate-lines t
+          word-wrap nil
+          auto-hscroll-mode nil)
+    )
+  (add-hook 'neo-after-create-hook #'neotree--setup)
   :bind
-  (([f8] . treemacs)
-   ("C-c t" . treemacs-select-window)))
+  (([f8] . neotree-toggle)
+   ("C-c t" . neotree)
+   :map neotree-mode-map
+   ([f5] . (lambda () (interactive) nil))
+   ([f6] . (lambda () (interactive) nil))
+   ([f7] . (lambda () (interactive) nil))))
 
 ;;====================
 ;; Resize-Window (Resizing)
@@ -429,9 +565,29 @@
 
 ;; Load Resize-Window
 (use-package resize-window
-  :ensure t
   :bind
   ("C-c w" . resize-window))
+
+;;====================
+;; Writeroom-Mode
+;;====================
+
+;; Bindings:
+;; [ F5 ] -> Toggle
+;; [ F6 ] -> (Overwritten) Decrease writeroom width (writeroom-mode)
+;; [ F7 ] -> (Overwritten) Increase writeroom width (writeroom-mode)
+
+;; Load Writeroom-Mode
+(use-package writeroom-mode
+  :custom
+  (writeroom-global-effects nil)
+  (writeroom-maximize-window nil)
+  (writeroom-fringes-outside-margins nil)
+  :bind
+  (([f5] . writeroom-mode)
+   :map writeroom-mode-map
+   ([f6] . writeroom-decrease-width)
+   ([f7] . writeroom-increase-width)))
 
 ;;====================
 ;; Multiple-Cursors
@@ -444,7 +600,8 @@
 
 ;; Load Multiple-Cursors
 (use-package multiple-cursors
-  :ensure t
+  :custom
+  (mc/always-run-for-all nil)
   :bind
   (("C->" . mc/mark-next-like-this)
    ("C-<" . mc/mark-previous-like-this)
@@ -457,11 +614,32 @@
 
 ;; Load Rainbow-Mode
 (use-package rainbow-mode
-  :ensure t
-  :config
-  (progn
-	(add-hook 'html-mode-hook #'rainbow-mode)
-	(add-hook 'css-mode-hook #'rainbow-mode)))
+  :hook
+  ((html-mode css-mode) . rainbow-mode))
+
+;;====================
+;; Rainbow-Delimiters (Delimiter Highlighting)
+;;====================
+
+;; Load Rainbow-Delimiters
+(use-package rainbow-delimiters
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+
+;;====================
+;; HL-Todo (TODO/FIXME Highlighting)
+;;====================
+
+;; Load HL-Todo
+(use-package hl-todo
+  :custom
+  (hl-todo-keyword-faces
+   '(("TODO" . ,(face-foreground 'hl-todo))
+     ("DEBUG" . ,(face-foreground 'hl-todo))
+     ("FIXME" . ,(face-foreground 'hl-todo))
+     ("HACK" . ,(face-foreground 'hl-todo))))
+  :hook
+  (prog-mode . hl-todo-mode))
 
 ;;====================
 ;; Magit (Git Interface)
@@ -472,5 +650,73 @@
 
 ;; Load Magit
 (use-package magit
-  :ensure t
-  :bind ("C-c g" . magit-status))
+  :bind
+  ("C-c g" . magit-status))
+
+;; [TODO Listing]
+;; Load Magit-Todos
+(use-package magit-todos
+  :hook
+  (magit-mode-hook))
+
+;;====================
+;; Ido-Vertical-Mode (Vertical Completions)
+;;====================
+
+;; Load Ido-Vertical-Mode
+(use-package ido-vertical-mode
+  :demand
+  t
+  :config
+  (ido-vertical-mode t)
+  :custom
+  (ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
+
+;;====================
+;; Flx-Ido (Ido Fuzzy Matching)
+;;====================
+
+;; Load Flx-Ido
+(use-package flx-ido
+  :demand
+  t
+  :config
+  (flx-ido-mode t))
+
+;;====================
+;; Anzu (Search Mode Info Display)
+;;====================
+
+;; Load Anzu
+(use-package anzu
+  :demand
+  t
+  :custom
+  (anzu-cons-mode-line-p nil)
+  :config
+  (global-anzu-mode t)
+  :bind
+  (("<remap> <query-replace>" . 'anzu-query-replace)
+   ("<remap> <query-replace-regexp>" . 'anzu-query-replace-regexp)))
+
+;;====================
+;; Smooth Scrolling
+;;====================
+
+;; Load Smooth-Scrolling
+(use-package smooth-scrolling
+  :demand
+  t
+  :custom
+  (smooth-scroll-margin 6)
+  :config
+  (smooth-scrolling-mode t))
+
+
+;;========================================
+;;
+;; END OF INIT FILE
+;;
+;;========================================
+
+;;; init.el ends here
