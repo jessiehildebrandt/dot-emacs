@@ -265,7 +265,7 @@
   (interactive)
   (when (yes-or-no-p "Download latest init file from jessieh.net? ")
     (message "Updating init file...")
-    (url-copy-file "https://jessieh.net/emacs" (concat user-emacs-directory "init.el"))))
+    (url-copy-file "https://jessieh.net/emacs" (concat user-emacs-directory "init.el") t)))
 
 (defun byte-compile-init-file ()
   "Byte compile the init file."
