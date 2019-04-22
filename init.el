@@ -271,7 +271,6 @@
 (defun byte-compile-init-file ()
   "Byte compile the init file."
   (interactive)
-
   (save-restriction
     (message "Byte-compiling init file...")
     (byte-compile-file (concat user-emacs-directory "init.el"))))
