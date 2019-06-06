@@ -1,4 +1,4 @@
- ;;; init.el --- My custom Emacs configuration file. -*- lexical-binding: t; -*-
+;;; init.el --- My custom Emacs configuration file. -*- lexical-binding: t; -*-
 
 ;;================================================================================
 ;;
@@ -310,12 +310,12 @@
 ;;====================
 
 ;; Load "mood-one"
- (use-package mood-one-theme
-   :demand
-   t
-   :config
-   (setq diff-hl-fringe-bmp-function #'mood-one-theme-diff-hl-fringe-bmp-function)
-   (eval-after-load 'flycheck #'mood-one-theme-flycheck-fringe-bmp-enable))
+(use-package mood-one-theme
+  :demand
+  t
+  :config
+  (setq diff-hl-fringe-bmp-function #'mood-one-theme-diff-hl-fringe-bmp-function)
+  (eval-after-load 'flycheck #'mood-one-theme-flycheck-fringe-bmp-enable))
 
 ;;====================
 ;; Mode-Line
