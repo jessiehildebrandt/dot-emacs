@@ -326,7 +326,7 @@
   :demand
   t
   :config
-  (mood-line-activate))
+  (mood-line-mode))
 
 
 ;;========================================
