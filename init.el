@@ -146,6 +146,9 @@
 ;; Package Manager
 ;;====================
 
+;; Temporary fix for bugged package archive retrieval in Emacs 26.2.
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 ;; Configure the package manager.
 (eval-and-compile
 
