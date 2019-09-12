@@ -479,8 +479,7 @@
   t
   :config
   (smart-tabs-insinuate 'c 'c++ 'java
-                        'javascript
-                        'cperl 'python
+                        'javascript 'cperl
                         'ruby 'nxml))
 
 ;;====================
