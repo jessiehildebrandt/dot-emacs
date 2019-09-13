@@ -263,34 +263,34 @@
 ;; Init File
 ;;====================
 
-(defun update-init-file ()
+(defun init-file/download-latest ()
   "Download the latest init file from jessieh.net."
   (interactive)
   (when (yes-or-no-p "Download latest init file from jessieh.net? ")
     (message "Updating init file...")
     (url-copy-file "https://jessieh.net/emacs" (concat user-emacs-directory "init.el") t)
-    (byte-compile-init-file)))
+    (init-file/byte-compile)))
 
-(defun byte-compile-init-file ()
+(defun init-file/byte-compile ()
   "Byte compile the init file."
   (interactive)
   (save-restriction
     (message "Byte-compiling init file...")
     (byte-compile-file (concat user-emacs-directory "init.el"))))
 
-(defun refresh-init-file-packages ()
+(defun init-file/redownload-packages ()
   "Redownload all packages that have been configured in the init file."
   (interactive)
   (when (yes-or-no-p "Redownload and reconfigure packages? ")
-    (message "Refreshing packages...")
+    (message "Redownloading packages...")
     (delete-directory package-user-dir t)
-    (byte-compile-init-file)))
+    (init-file/byte-compile)))
 
 ;; Make sure that this init file is byte-compiled whenever it changes.
 (if (file-newer-than-file-p
      (concat user-emacs-directory "init.el")
      (concat user-emacs-directory "init.elc"))
-    (add-hook 'emacs-startup-hook 'byte-compile-init-file))
+    (add-hook 'emacs-startup-hook 'init-file/byte-compile))
 
 
 ;;========================================
