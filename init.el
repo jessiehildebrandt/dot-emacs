@@ -414,6 +414,8 @@
 
 ;; Load FlyCheck
 (use-package flycheck
+  :requires
+  (pkg-info)
   :hook
   (prog-mode . flycheck-mode)
   (c++-mode-hook . (lambda () (setq flycheck-clang-standard "c++17")))
