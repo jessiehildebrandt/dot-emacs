@@ -401,8 +401,8 @@
 
 ;; Load Company
 (use-package company
-  :demand
-  t
+  :defer
+  2
   :config
   (global-company-mode)
   :custom
