@@ -415,11 +415,13 @@
 
 ;; Load FlyCheck
 (use-package flycheck
-  :requires
-  (pkg-info)
   :hook
   (prog-mode . flycheck-mode)
   (c++-mode-hook . (lambda () (setq flycheck-clang-standard "c++17")))
+  :custom
+  (flycheck-python-flake8-executable "flake8")
+  (flycheck-python-pylint-executable "pylint")
+  (flycheck-python-mypy-executable "mypy")
   :bind
   ("C-c e" . flycheck-list-errors))
 
