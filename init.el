@@ -659,13 +659,37 @@
 ;; Load Magit
 (use-package magit
   :bind
-  ("C-c g" . magit-status))
+  ("C-c g" . magit-status)
+  :custom
+  (magit-completing-read-function 'magit-ido-completing-read))
 
 ;; [TODO Listing]
 ;; Load Magit-Todos
 (use-package magit-todos
   :hook
   (magit-mode-hook))
+
+;;====================
+;; Crm-Custom (Additional Ido Compat.)
+;;====================
+
+;; Load Crm-Custom
+(use-package crm-custom
+  :demand
+  t
+  :config
+  (crm-custom-mode 1))
+
+;;====================
+;; Ido-Completing-Read+ (Ido Everywhere)
+;;====================
+
+;; Load Ido-Completing-Read+
+(use-package ido-completing-read+
+  :demand
+  t
+  :config
+  (ido-ubiquitous-mode t))
 
 ;;====================
 ;; Ido-Vertical-Mode (Vertical Completions)
