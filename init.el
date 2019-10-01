@@ -192,47 +192,27 @@
 ;;====================
 
 ;; Custom Bindings:
-;; [ F6 ]                -> Toggle line-wrapping
-;; [ F7 ]                -> Toggle linum-mode/display-line-numbers-mode
-;; [ F10 ]               -> (Overwritten) Open the menubar in a minibuffer
-;; [ C-z ]               -> (Overwritten) Undo
-;; [ C-x C-b ]           -> (Overwritten) Invoke ibuffer
-;; [ C-c C-o ]           -> Focus on minibuffer window
-;; [ C-c C-r ]           -> Revert buffer without confirmation
-;; [ C-x RET ]           -> Open eshell in the current buffer
-;; [ C-c C-<i,j,k,l> ]   -> Focus on the window in <direction>
-;; [ M-n / M-p ]         -> Scroll up/down by one line
-;; [ C-M-n / C-M-p ]     -> Move forward/back by one paragraph
+;; [ F6 ]               -> Toggle line-wrapping
+;; [ F7 ]               -> Toggle linum-mode/display-line-numbers-mode
+;; [ F10 ]              -> (Overwritten) Open the menubar in a minibuffer
+;; [ C-z ]              -> (Overwritten) Undo (and don't suspend, thanks)
+;; [ C-c o ]          -> Focus on minibuffer window
+;; [ C-c r ]          -> Revert buffer without confirmation
+;; [ C-x RET ]          -> Open eshell in the current buffer
+;; [ C-x C-b ]          -> (Overwritten) Invoke ibuffer
+;; [ M-n / M-p ]        -> Scroll up/down by one line
+;; [ C-M-n / C-M-p ]    -> Move forward/back by one paragraph
+;; [ C-c C-<i,j,k,l> ]  -> Focus on the window in <direction>
 
 ;; Require bind-key. (Bundled with use-package)
 (require 'bind-key)
 
-;; Bind a key to toggle line wrapping behavior.
-(bind-key [f6] 'visual-line-mode)
-
-;; Bind a key to show line numbers.
-(bind-key [f7] 'linum-mode)
-(when (>= emacs-major-version 26)
-  (bind-key [f7] 'display-line-numbers-mode))
-
-;; Replace the menu-bar-open keybind with a tmm-menubar keybind.
-(bind-key [f10] 'tmm-menubar)
-
-;; Replace the suspend-emacs keybind with a (much less annoying) undo keybind.
-(bind-key "C-z" 'undo)
-
-;; Replace the list-buffers keybind with an ibuffer keybind.
-(bind-key "C-x C-b" 'ibuffer)
-
-;; Bind a key to switch to the minibuffer.
 (defun switch-to-minibuffer-window ()
   "Switch to the minibuffer window (if active)."
   (interactive)
   (when (active-minibuffer-window)
     (select-window (active-minibuffer-window))))
-(bind-key "C-c C-o" 'switch-to-minibuffer-window)
 
-;; Bind a key to revert the buffer without confirmation.
 (defun revert-buffer-no-confirm ()
   "Revert the current buffer without confirmation."
   (interactive)
@@ -240,24 +220,24 @@
       (revert-buffer :ignore-auto :noconfirm)
     (when (yes-or-no-p "The contents of this buffer have been modified. Really revert? ")
       (revert-buffer :ignore-auto :noconfirm))))
-(bind-key "C-c C-r" 'revert-buffer-no-confirm)
 
-;; Bind a key to open up eshell.
-(bind-key "C-x RET" 'eshell)
-
-;; Bind keys to switch windows easier.
-(bind-key* "C-c C-i" 'windmove-up)
-(bind-key* "C-c C-k" 'windmove-down)
-(bind-key* "C-c C-j" 'windmove-left)
-(bind-key* "C-c C-l" 'windmove-right)
-
-;; Bind keys to scroll up/down by one line
-(bind-key "M-n" 'scroll-up-line)
-(bind-key "M-p" 'scroll-down-line)
-
-;; Bind keys to move forward/back by one paragraph
-(bind-key "C-M-n" 'forward-paragraph)
-(bind-key "C-M-p" 'backward-paragraph)
+;; Set up all custom bindings (non-package-specific)
+(bind-keys ([f6] 'visual-line-mode)
+           ([f7] (if (>= emacs-major-version 26) 'display-line-numbers-mode 'linum-mode))
+           ([f10] 'tmm-menubar)
+           ("C-z" 'undo)
+           ("C-c o" 'switch-to-minibuffer-window)
+           ("C-c r" 'revert-buffer-no-confirm)
+           ("C-x RET" 'eshell)
+           ("C-x C-b" 'ibuffer)
+           ("M-n" 'scroll-up-line)
+           ("M-p" 'scroll-down-line)
+           ("C-M-n" 'forward-paragraph)
+           ("C-M-p" 'backward-paragraph))
+(bind-keys* ("C-c C-i" 'windmove-up)
+            ("C-c C-k" 'windmove-down)
+            ("C-c C-j" 'windmove-left)
+            ("C-c C-l" 'windmove-right))
 
 ;;====================
 ;; Init File
