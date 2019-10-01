@@ -372,32 +372,6 @@
   ("\\.fish\\'" . fish-mode))
 
 ;;====================
-;; Exec-Path-From-Shell (PATH Setting)
-;;====================
-
-;; Load Exec-Path-From-Shell (Non-Windows systems only)
-(unless (string-equal system-type "windows-nt")
-  (use-package exec-path-from-shell
-    :demand
-    t
-    :custom
-    (exec-path-from-shell-arguments '("-l"))
-    :config
-    (add-to-list 'exec-path-from-shell-variables '"RUST_SRC_PATH")
-    (exec-path-from-shell-initialize)))
-
-;;====================
-;; Racer (Rust Completion)
-;;====================
-
-;; Load Racer
-(use-package racer
-  :custom
-  (racer-rust-src-path nil)
-  :hook
-  (rust-mode . racer-mode))
-
-;;====================
 ;; Package-Lint (Elisp Package Linter)
 ;;====================
 
@@ -465,12 +439,6 @@
 ;; [PHP]
 ;; Load Company-PHP
 (use-package company-php
-  :after
-  (company))
-
-;; [Rust]
-;; Load Company-Racer
-(use-package company-racer
   :after
   (company))
 
