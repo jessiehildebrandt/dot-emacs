@@ -299,7 +299,8 @@
   :config
   (setq diff-hl-fringe-bmp-function #'mood-one-theme-diff-hl-fringe-bmp-function)
   (eval-after-load 'flycheck #'mood-one-theme-flycheck-fringe-bmp-enable)
-  (eval-after-load 'flymake #'mood-one-theme-flymake-fringe-bmp-enable))
+  (eval-after-load 'flymake #'mood-one-theme-flymake-fringe-bmp-enable)
+  (eval-after-load 'neotree #'mood-one-theme-neotree-configuration-enable))
 
 ;;====================
 ;; Mode-Line
@@ -498,11 +499,9 @@
     (make-local-variable 'auto-hscroll-mode)
     (setq mode-line-format nil
           line-spacing 3
-          tab-width 1
           truncate-lines t
           word-wrap nil
-          auto-hscroll-mode nil)
-    )
+          auto-hscroll-mode nil))
   (add-hook 'neo-after-create-hook #'neotree--setup)
   :bind
   (([f8] . neotree-toggle)
