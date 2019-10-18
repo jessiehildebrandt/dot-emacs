@@ -41,6 +41,7 @@
  inhibit-startup-screen t            ; Don't show startup screen
  inhibit-splash-screen t             ; Don't show splash screen
  x-gtk-use-system-tooltips nil       ; Don't use system tooltips
+ x-super-keysym 'meta                ; Treat the super key as a meta key
  mouse-wheel-progressive-speed nil   ; Don't accelerate mouse scrolling
  scroll-preserve-screen-position 1   ; Don't move cursor while scrolling
  custom-file "~/.emacs.d/custom.el"  ; Use separate custom-vars file
