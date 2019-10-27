@@ -73,13 +73,21 @@
  c-default-style "bsd"
  )
 
-;; Disable some unnecessary byte-compiler warnings.
+;; Disable some unnecessary byte compilation warnings.
 (setq byte-compile-warnings '(not
                               free-vars
                               unresolved
                               noruntime
                               lexical
                               make-local))
+
+;; Set default buffer grouping in ibuffer
+(setq ibuffer-saved-filter-groups
+      (quote (("default"
+               ("Emacs" (or
+                         (name . "^\\*.*\\*$")
+                         (name . "^magit.*:.*$")))))))
+(add-hook 'ibuffer-mode-hook (lambda () (ibuffer-switch-to-saved-filter-groups "default")))
 
 ;; Temporarily disable file handler checking during startup to save time.
 (defvar temp--file-name-handler-alist file-name-handler-alist)
