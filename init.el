@@ -85,7 +85,7 @@
 (setq ibuffer-saved-filter-groups
       (quote (("default"
                ("Emacs" (or
-                         (name . "^\\*.*\\*$")
+                         (name . "^\\*.*\\*.*$")
                          (name . "^magit.*:.*$")))))))
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-switch-to-saved-filter-groups "default")))
 
