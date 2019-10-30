@@ -360,6 +360,12 @@
   :mode
   ("\\.fish\\'" . fish-mode))
 
+;; Load C Sharp Mode
+;; (Associated files: .cs)
+(use-package csharp-mode
+  :mode
+  ("\\.cs=='" . csharp-mode))
+
 ;;====================
 ;; Package-Lint (Elisp Package Linter)
 ;;====================
