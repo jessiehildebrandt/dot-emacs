@@ -370,7 +370,7 @@
 ;; (Associated files: .cs)
 (use-package csharp-mode
   :mode
-  ("\\.cs=='" . csharp-mode))
+  ("\\.cs\\'" . csharp-mode))
 
 ;;====================
 ;; Package-Lint (Elisp Package Linter)
