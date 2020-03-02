@@ -435,7 +435,8 @@
   :config
   (global-company-mode)
   :custom
-  (company-idle-delay 0.3))
+  (company-idle-delay 0.3)
+  (company-dabbrev-downcase nil))
 
 ;; [Lua]
 ;; Load Company-Lua
