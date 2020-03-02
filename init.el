@@ -43,6 +43,8 @@
  x-gtk-use-system-tooltips nil       ; Don't use system tooltips
  mouse-wheel-progressive-speed nil   ; Don't accelerate mouse scrolling
  scroll-preserve-screen-position 1   ; Don't move cursor while scrolling
+ scroll-conservatively 101           ; Only scroll one line at a time
+ scroll-margin 5                     ; Maintain a margin of 5 lines while scrolling
  custom-file "~/.emacs.d/custom.el"  ; Use separate custom-vars file
  )
 
@@ -684,19 +686,6 @@
   :bind
   (("<remap> <query-replace>" . 'anzu-query-replace)
    ("<remap> <query-replace-regexp>" . 'anzu-query-replace-regexp)))
-
-;;====================
-;; Smooth Scrolling
-;;====================
-
-;; Load Smooth-Scrolling
-(use-package smooth-scrolling
-  :demand
-  t
-  :custom
-  (smooth-scroll-margin 6)
-  :config
-  (smooth-scrolling-mode t))
 
 
 ;;========================================
