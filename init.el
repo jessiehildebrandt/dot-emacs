@@ -45,17 +45,23 @@
  scroll-preserve-screen-position 1   ; Don't move cursor while scrolling
  scroll-conservatively 101           ; Only scroll one line at a time
  scroll-margin 5                     ; Maintain a margin of 5 lines while scrolling
- custom-file "~/.emacs.d/custom.el"  ; Use separate custom-vars file
  )
 
 ;; Set backup behavior.
 (setq-default
- backup-directory-alist '(("." . "~/.emacs.d/backup"))  ; Set backup file directory
  backup-by-copying t                                    ; Don't delink hardlinks
  version-control t                                      ; Use version numbers on backups
  delete-old-versions t                                  ; Do not keep old backups
  kept-new-versions 5                                    ; Keep 5 new versions
  kept-old-versions 3                                    ; Keep 3 old versions
+ )
+
+;; Configure user directory and file locations.
+(defconst custom-backup-dir (concat user-emacs-directory "backups"))
+(setq-default
+ custom-file (concat user-emacs-directory "custom.el")          ; Use separate custom-vars file
+ backup-directory-alist `((".*" . ,custom-backup-dir))          ; Set backup file directory
+ auto-save-file-name-transforms `((".*" ,custom-backup-dir t))  ; Set autosave file directory
  )
 
 ;; Enable uniquify for better unique buffer names.
