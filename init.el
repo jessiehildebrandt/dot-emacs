@@ -444,19 +444,6 @@
   (company))
 
 ;;====================
-;; Smart-Tabs-Mode (Superior Indentation Method)
-;;====================
-
-;; Load Smart-Tabs-Mode
-(use-package smart-tabs-mode
-  :demand
-  t
-  :config
-  (smart-tabs-insinuate 'c 'c++ 'java
-                        'javascript 'cperl
-                        'ruby 'nxml))
-
-;;====================
 ;; Smex (M-x Autocompletion)
 ;;====================
 
