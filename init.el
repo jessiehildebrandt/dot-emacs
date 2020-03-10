@@ -347,7 +347,7 @@
 ;;====================
 
 ;; Currently Supported:
-;; Lua, PHP, Rust, Fish
+;; Lua, PHP, Rust, Fish, C#, Dart, Kotlin
 
 ;; Load Lua Mode
 ;; (Associated files: .lua)
@@ -379,6 +379,18 @@
 (use-package csharp-mode
   :mode
   ("\\.cs\\'" . csharp-mode))
+
+;; Load Dart Mode
+;; (Associated files: .dart)
+(use-package dart-mode
+  :mode
+  ("\\.dart\\'" . dart-mode))
+
+;; Load Kotlin Mode
+;; (Associated files: .kt)
+(use-package kotlin-mode
+  :mode
+  ("\\.kt\\'" . kotlin-mode))
 
 ;;====================
 ;; Package-Lint (Elisp Package Linter)
