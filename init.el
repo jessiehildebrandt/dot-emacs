@@ -347,7 +347,7 @@
 ;;====================
 
 ;; Currently Supported:
-;; Lua, PHP, Rust, Fish, C#, Dart, Kotlin
+;; Lua, PHP, Rust, Fish, C#, Dart, Kotlin, GDScript
 
 ;; Load Lua Mode
 ;; (Associated files: .lua)
@@ -391,6 +391,13 @@
 (use-package kotlin-mode
   :mode
   ("\\.kt\\'" . kotlin-mode))
+
+;; Load GDScript Mode
+;; (Associated files: .gd, .tscn)
+(use-package gdscript-mode
+  :mode
+  ("\\.gd\\'" . gdscript-mode)
+  ("\\.tscn\\'" . gdscript-mode))
 
 ;;====================
 ;; Package-Lint (Elisp Package Linter)
