@@ -18,13 +18,28 @@
 ;; Garbage Collector
 ;;====================
 
-;; Increase the garbage collection threshold to 100MB for a faster startup time.
-(setq-default gc-cons-threshold 100000000
-              gc-cons-percentage 0.6)
+;; Set the default garbage collection parameters. (~8MB)
+(defvar init-file/gc-cons-threshold 8000000)
+(defvar init-file/gc-cons-percentage 0.1)
 
-;; Restore it to 8MB after initialization is finished.
-(add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold 8000000
-                                               gc-cons-percentage 0.1)))
+;; Define some functions for deferring and restoring Emacs' garbage collection facilities.
+(defun defer-garbage-collection ()
+  "Set the garbage collection threshold to the highest possible for collection avoidance."
+  (setq gc-cons-threshold most-positive-fixnum
+        gc-cons-percentage 0.6))
+(defun restore-garbage-collection ()
+  "Restore the garbage collection threshold parameters in a deferred fashion."
+  (run-at-time
+   1 nil (lambda () (setq gc-cons-threshold init-file/gc-cons-threshold
+                          gc-cons-percentage init-file/gc-cons-percentage))))
+
+;; Defer garbage collection while Emacs is starting and restore the threshold to 8MB when we're done.
+(defer-garbage-collection)
+(add-hook 'emacs-startup-hook #'restore-garbage-collection)
+
+;; Similarly raise and restore the garbage collection threshold for minibuffer commands.
+(add-hook 'minibuffer-setup-hook #'defer-garbage-collection)
+(add-hook 'minibuffer-exit-hook #'restore-garbage-collection)
 
 ;; Collect all garbage whenever Emacs loses focus.
 (add-hook 'focus-out-hook #'garbage-collect)
