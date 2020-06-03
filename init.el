@@ -90,7 +90,6 @@
 
 ;; Set the default styling rules to use.
 (setq-default
- indent-tabs-mode nil
  tab-width 4
  c-basic-offset 4
  c-default-style "bsd"
