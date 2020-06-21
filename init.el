@@ -322,7 +322,7 @@
 
 ;; Set up styling for the default face.
 (set-face-attribute 'default nil
-                    :family "Hack"
+                    :family "Roboto Mono"
                     :height 90)
 
 ;;====================
