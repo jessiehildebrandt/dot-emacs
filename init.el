@@ -19,8 +19,8 @@
 ;;====================
 
 ;; Set the default garbage collection parameters. (~8MB)
-(defvar init-file/gc-cons-threshold 8000000)
-(defvar init-file/gc-cons-percentage 0.1)
+(defvar init-file/gc-cons-threshold 8000000 "Preferred garbage collection threshold value.")
+(defvar init-file/gc-cons-percentage 0.1 "Preferred garbage collection percentage value.")
 
 ;; Define some functions for deferring and restoring Emacs' garbage collection facilities.
 (defun defer-garbage-collection ()
