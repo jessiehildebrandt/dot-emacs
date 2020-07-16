@@ -41,8 +41,8 @@
 (add-hook 'minibuffer-setup-hook #'defer-garbage-collection)
 (add-hook 'minibuffer-exit-hook #'restore-garbage-collection)
 
-;; Collect all garbage whenever Emacs loses focus.
-(add-hook 'focus-out-hook #'garbage-collect)
+;; Collect all garbage whenever the focus changes to/from Emacs.
+(add-function :after after-focus-change-function #'garbage-collect)
 
 ;;====================
 ;; Variables/Basic Config.
