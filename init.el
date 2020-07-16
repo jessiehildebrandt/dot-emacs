@@ -416,6 +416,21 @@
   ("\\.tscn\\'" . gdscript-mode))
 
 ;;====================
+;; LSP Mode (Language Server Support)
+;;====================
+
+;; Load LSP Mode
+;; Associated languages: JavaScript, GDScript
+(use-package lsp-mode
+  :hook
+  (js-mode . lsp-deferred)
+  (gdscript-mode . lsp-deferred)
+  (rust-mode . lsp-deferred)
+  :commands
+  (lsp
+   lsp-deferred))
+
+;;====================
 ;; Package-Lint (Elisp Package Linter)
 ;;====================
 
@@ -442,14 +457,6 @@
   (flycheck-python-mypy-executable "mypy")
   :bind
   ("C-c e" . flycheck-list-errors))
-
-;; [Rust]
-;; Load FlyCheck-Rust
-(use-package flycheck-rust
-  :after
-  (flycheck)
-  :hook
-  (flycheck-mode-hook . flycheck-rust-setup))
 
 ;; [Elisp Packages]
 ;; Load FlyCheck-Package
