@@ -337,7 +337,8 @@
   (setq diff-hl-fringe-bmp-function #'mood-one-theme-diff-hl-fringe-bmp-function)
   (eval-after-load 'flycheck #'mood-one-theme-flycheck-fringe-bmp-enable)
   (eval-after-load 'flymake #'mood-one-theme-flymake-fringe-bmp-enable)
-  (eval-after-load 'neotree #'mood-one-theme-neotree-configuration-enable))
+  (eval-after-load 'neotree #'mood-one-theme-neotree-configuration-enable)
+  (load-theme 'mood-one t))
 
 ;;====================
 ;; Mode-Line
