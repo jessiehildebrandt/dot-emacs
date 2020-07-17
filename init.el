@@ -503,7 +503,7 @@
 
 ;; Load Projectile
 (use-package projectile
-  :ensure
+  :demand
   t
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
