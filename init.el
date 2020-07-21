@@ -48,6 +48,16 @@
 ;; Variables/Basic Config.
 ;;====================
 
+;; Define an interactive function for switching to the scratch buffer, (re)creating it if not present.
+(defun switch-to-scratch-buffer ()
+  "Switch to the scratch buffer, (re)creating it if not present."
+  (interactive)
+  (if (get-buffer "*scratch*")
+      (switch-to-buffer "*scratch*")
+    (progn
+      (switch-to-buffer (get-buffer-create "*scratch*"))
+      (lisp-interaction-mode))))
+
 ;; Basic variable configuration.
 (setq-default
  initial-scratch-message ""          ; Remove initial message
