@@ -400,6 +400,7 @@
 (use-package web-mode
   :custom
   (web-mode-markup-indent-offset 2)
+  (web-mode-enable-auto-quoting nil)
   :mode
   (("\\.php\\'" . web-mode)
    ("\\.inc\\'" . web-mode)
