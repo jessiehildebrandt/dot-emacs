@@ -395,12 +395,19 @@
   :mode
   ("\\.lua\\'" . lua-mode))
 
-;; Load PHP Mode
-;; (Associated files: .php (HTML-Mode), .inc)
-(use-package php-mode
+;; Load Web Mode
+;; (Associated files: .php, .inc, .html)
+(use-package web-mode
   :mode
-  (("\\.php\\'" . html-mode)
-   ("\\.inc\\'" . php-mode)))
+  (("\\.php\\'" . web-mode)
+   ("\\.inc\\'" . web-mode)
+   ("\\.html\\'" . web-mode)))
+
+;; Load JSON Mode
+;; (Associated files: .json)
+(use-package json-mode
+  :mode
+  ("\\.json\\'" . json-mode))
 
 ;; Load Rust Mode
 ;; (Associated files: .rs)
@@ -444,10 +451,11 @@
 ;;====================
 
 ;; Load LSP Mode
-;; Associated languages: JavaScript, GDScript
+;; Associated languages: JavaScript, JSON, GDScript, Rust
 (use-package lsp-mode
   :hook
   (js-mode . lsp-deferred)
+  (json-mode . lsp-deferred)
   (gdscript-mode . lsp-deferred)
   (rust-mode . lsp-deferred)
   :commands
