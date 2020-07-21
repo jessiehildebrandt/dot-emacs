@@ -158,26 +158,35 @@
  )
 
 ;;====================
-;; Graphical Mode Config
+;; New Frame Config
 ;;====================
 
-;; Define a function that will configure graphical Emacs frames.
-(defun configure-graphic-frame (frame)
-  "Set up graphical Emacs frame FRAME."
-  (when (display-graphic-p)
+;; Define a function that will configure new Emacs frames.
+(defun configure-new-frame (frame)
+  "Configure new frame FRAME."
+  (when (display-graphic-p frame)
     (select-frame frame)
-    (setq winid (frame-parameter frame 'outer-window-id))
-    (call-process-shell-command
-     (concat "xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT dark -id " winid))
+    (let ((winid (frame-parameter frame 'outer-window-id)))
+      (call-process-shell-command
+       (concat "xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT dark -id " winid)))
     (tool-bar-mode 0)
-    (scroll-bar-mode 0)))
+    (scroll-bar-mode 0))
+  (load-theme 'mood-one t))
 
-;; Hook the frame configuration function into all newly-created graphical frames.
-(when (display-graphic-p)
-  (progn
-    (add-hook 'window-setup-hook (lambda () (configure-graphic-frame (selected-frame))))
-    (add-hook 'after-make-frame-functions #'configure-graphic-frame)
-    (configure-graphic-frame (selected-frame))))
+;; Define a function that will inhibit startup message for new Emacs frames.
+(defun inhibit-new-frame-message ()
+  "Inhibit startup messages in new frames."
+  (setq inhibit-message t)
+  (run-with-idle-timer 0 nil (lambda () (setq inhibit-message nil))))
+
+;; Hook the frame configuration function into all newly-created frames.
+(add-hook 'after-make-frame-functions #'configure-new-frame)
+
+;; Hook the startup message inhibition function into all newly-created frames.
+(add-hook 'server-after-make-frame-hook #'inhibit-new-frame-message)
+
+;; Run for any already-existing frames
+(mapc 'configure-new-frame (frame-list))
 
 ;;====================
 ;; Package Manager
