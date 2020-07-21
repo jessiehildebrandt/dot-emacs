@@ -48,16 +48,6 @@
 ;; Variables/Basic Config.
 ;;====================
 
-;; Define an interactive function for switching to the scratch buffer, (re)creating it if not present.
-(defun switch-to-scratch-buffer ()
-  "Switch to the scratch buffer, (re)creating it if not present."
-  (interactive)
-  (if (get-buffer "*scratch*")
-      (switch-to-buffer "*scratch*")
-    (progn
-      (switch-to-buffer (get-buffer-create "*scratch*"))
-      (lisp-interaction-mode))))
-
 ;; Basic variable configuration.
 (setq-default
  initial-scratch-message ""          ; Remove initial message
@@ -253,6 +243,7 @@
 ;; [ C-z ]              -> (Overwritten) Undo (and don't suspend, thanks)
 ;; [ C-c o ]            -> Focus on minibuffer window
 ;; [ C-c r ]            -> Revert buffer without confirmation
+;; [ C-c s ]            -> Open scratch buffer in the current window
 ;; [ C-c RET ]          -> Open terminal in the current window
 ;; [ C-x C-b ]          -> (Overwritten) Invoke ibuffer
 ;; [ M-n / M-p ]        -> Scroll up/down by one line
@@ -275,6 +266,15 @@
       (revert-buffer :ignore-auto :noconfirm)
     (when (yes-or-no-p "The contents of this buffer have been modified. Really revert? ")
       (revert-buffer :ignore-auto :noconfirm))))
+
+(defun switch-to-scratch-buffer ()
+  "Switch to the scratch buffer, (re)creating it if not present."
+  (interactive)
+  (if (get-buffer "*scratch*")
+      (switch-to-buffer "*scratch*")
+    (progn
+      (switch-to-buffer (get-buffer-create "*scratch*"))
+      (lisp-interaction-mode))))
 
 (defun open-default-shell ()
   "Opens the default system shell in a terminal emulator."
