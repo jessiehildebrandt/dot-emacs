@@ -251,9 +251,9 @@
 ;; [ F7 ]               -> Toggle linum-mode/display-line-numbers-mode
 ;; [ F10 ]              -> (Overwritten) Open the menubar in a minibuffer
 ;; [ C-z ]              -> (Overwritten) Undo (and don't suspend, thanks)
-;; [ C-c o ]          -> Focus on minibuffer window
-;; [ C-c r ]          -> Revert buffer without confirmation
-;; [ C-x RET ]          -> Open eshell in the current buffer
+;; [ C-c o ]            -> Focus on minibuffer window
+;; [ C-c r ]            -> Revert buffer without confirmation
+;; [ C-c RET ]          -> Open terminal in the current window
 ;; [ C-x C-b ]          -> (Overwritten) Invoke ibuffer
 ;; [ M-n / M-p ]        -> Scroll up/down by one line
 ;; [ C-M-n / C-M-p ]    -> Move forward/back by one paragraph
@@ -276,6 +276,11 @@
     (when (yes-or-no-p "The contents of this buffer have been modified. Really revert? ")
       (revert-buffer :ignore-auto :noconfirm))))
 
+(defun open-default-shell ()
+  "Opens the default system shell in a terminal emulator."
+  (interactive)
+  (term shell-file-name))
+
 ;; Set up all custom bindings (non-package-specific)
 (bind-keys ([f6] . visual-line-mode)
            ([f7] . display-line-numbers-mode)
@@ -283,7 +288,7 @@
            ("C-z" . undo)
            ("C-c o" . switch-to-minibuffer-window)
            ("C-c r" . revert-buffer-no-confirm)
-           ("C-x RET" . eshell)
+           ("C-c RET" . open-default-shell)
            ("C-x C-b" . ibuffer)
            ("M-n" . scroll-up-line)
            ("M-p" . scroll-down-line)
