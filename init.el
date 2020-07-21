@@ -398,6 +398,8 @@
 ;; Load Web Mode
 ;; (Associated files: .php, .inc, .html)
 (use-package web-mode
+  :custom
+  (web-mode-markup-indent-offset 2)
   :mode
   (("\\.php\\'" . web-mode)
    ("\\.inc\\'" . web-mode)
