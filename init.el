@@ -598,6 +598,8 @@
 ;; Load Neotree
 (use-package neotree
   :custom
+  (neo-confirm-create-file #'off-p)
+  (neo-confirm-create-directory #'off-p)
   (neo-show-updir-line nil)
   (neo-window-width 30)
   (neo-theme 'nerd)
