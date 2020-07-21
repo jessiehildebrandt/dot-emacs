@@ -107,8 +107,7 @@
  )
 
 ;; (OS-specific) Set the default working directory.
-(if (or (eq system-type 'windows-nt)
-        (eq system-type 'ms-dos))
+(if (eq system-type 'windows-nt)
     (setq default-directory (getenv "USERPROFILE"))
   (setq default-directory "~/"))
 
