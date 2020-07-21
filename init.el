@@ -299,6 +299,11 @@
 ;; Init File
 ;;====================
 
+(defun init-file/open-init-file ()
+  "Opens the init file in a buffer."
+  (interactive)
+  (find-file user-init-file))
+
 (defun init-file/download-latest-init-file ()
   "Download the latest init file from jessieh.net."
   (interactive)
