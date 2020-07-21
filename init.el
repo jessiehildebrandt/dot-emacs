@@ -454,9 +454,10 @@
 ;;====================
 
 ;; Load LSP Mode
-;; Associated languages: JavaScript, JSON, GDScript, Rust
+;; Associated languages: HTML, JavaScript, JSON, GDScript, Rust
 (use-package lsp-mode
   :hook
+  (web-mode . lsp-deferred)
   (js-mode . lsp-deferred)
   (json-mode . lsp-deferred)
   (gdscript-mode . lsp-deferred)
