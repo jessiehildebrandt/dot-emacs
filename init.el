@@ -1,12 +1,22 @@
 ;;; init.el --- My custom Emacs configuration file. -*- lexical-binding: t; -*-
 
+;;; Commentary:
+
 ;;================================================================================
 ;;
 ;; Jessie Hildebrandt's
 ;; Run-Anywhere Emacs Config
 ;;
+;; This configuration file was designed to work with Emacs 27, but should work
+;; with Emacs 26.
+;;
+;; Generic keybinds are documented at the top of the "Key Bindings" subsection,
+;; and package-specific keybinds are documented above each "use-package" statement
+;; in the "EXTERNAL PACKAGES" section.
+;;
 ;;================================================================================
 
+;;; Code:
 
 ;;========================================
 ;;
@@ -338,7 +348,6 @@
      (concat user-emacs-directory "init.elc"))
     (add-hook 'emacs-startup-hook 'init-file/byte-compile-init-file))
 
-
 ;;========================================
 ;;
 ;; THEME CONFIGURATION
@@ -379,7 +388,6 @@
   t
   :config
   (mood-line-mode))
-
 
 ;;========================================
 ;;
@@ -793,7 +801,6 @@
   :bind
   (("<remap> <query-replace>" . 'anzu-query-replace)
    ("<remap> <query-replace-regexp>" . 'anzu-query-replace-regexp)))
-
 
 ;;========================================
 ;;
