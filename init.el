@@ -267,8 +267,8 @@
     (when (yes-or-no-p "The contents of this buffer have been modified. Really revert? ")
       (revert-buffer :ignore-auto :noconfirm))))
 
-(defun switch-to-scratch-buffer ()
-  "Switch to the scratch buffer, (re)creating it if not present."
+(defun open-scratch-buffer ()
+  "Open the scratch buffer, (re)creating it if not present."
   (interactive)
   (if (get-buffer "*scratch*")
       (switch-to-buffer "*scratch*")
@@ -288,6 +288,7 @@
            ("C-z" . undo)
            ("C-c o" . switch-to-minibuffer-window)
            ("C-c r" . revert-buffer-no-confirm)
+           ("C-c s" . open-scratch-buffer)
            ("C-c RET" . open-default-shell)
            ("C-x C-b" . ibuffer)
            ("M-n" . scroll-up-line)
