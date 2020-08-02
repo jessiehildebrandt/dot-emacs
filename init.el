@@ -100,10 +100,10 @@
 
 ;; Set the default styling rules to use.
 (setq-default
- indent-tabs-mode nil
- tab-width 4
- c-basic-offset 4
- c-default-style "bsd"
+ indent-tabs-mode nil   ; Don't use tabs for indentation
+ tab-width 4            ; Use 4 spaces for default by indentation
+ c-basic-offset 4       ; Same as above, but for C-like languages
+ c-default-style "bsd"  ; Use BSD-style default styling rules for C-like languages
  )
 
 ;; (OS-specific) Set the default working directory.
