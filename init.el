@@ -29,8 +29,8 @@
 ;;====================
 
 ;; Set the default garbage collection parameters. (~32MB)
-(defvar init-file/gc-cons-threshold 32000000 "Preferred garbage collection threshold value.")
-(defvar init-file/gc-cons-percentage 0.1 "Preferred garbage collection percentage value.")
+(defconst init-file/gc-cons-threshold 32000000 "Preferred garbage collection threshold value.")
+(defconst init-file/gc-cons-percentage 0.1 "Preferred garbage collection percentage value.")
 
 ;; Define some functions for deferring and restoring Emacs' garbage collection facilities.
 (defun defer-garbage-collection ()
@@ -82,7 +82,7 @@
  )
 
 ;; Configure user directory and file locations.
-(defconst custom-backup-dir (concat user-emacs-directory "backups"))
+(defconst custom-backup-dir (concat user-emacs-directory "backups") "Preferred backup directory.")
 (setq-default
  custom-file (concat user-emacs-directory "custom.el")          ; Use separate custom-vars file
  backup-directory-alist `((".*" . ,custom-backup-dir))          ; Set backup file directory
