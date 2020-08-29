@@ -52,7 +52,9 @@
 (add-hook 'minibuffer-exit-hook #'restore-garbage-collection)
 
 ;; Collect all garbage whenever the focus changes to/from Emacs.
-(add-function :after after-focus-change-function #'garbage-collect)
+(if (>= emacs-major-version 27)
+    (add-function :after after-focus-change-function #'garbage-collect)
+  (add-hook 'focus-out-hook #'garbage-collect))
 
 ;;====================
 ;; Variables/Basic Config.
