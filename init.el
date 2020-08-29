@@ -412,15 +412,18 @@
   ("\\.lua\\'" . lua-mode))
 
 ;; Load Web Mode
-;; (Associated files: .php, .inc, .html)
+;; (Associated files: .php, .html)
+;; (In js-mode: .ts)
+;; (In js-jsx-mode: .jsx, .tsx)
 (use-package web-mode
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-enable-auto-quoting nil)
   :mode
   (("\\.php\\'" . web-mode)
-   ("\\.inc\\'" . web-mode)
-   ("\\.html\\'" . web-mode)))
+   ("\\.html\\'" . web-mode)
+   ("\\.ts\\'" . js-mode)
+   ("\\.[jt]sx\\'" . js-jsx-mode)))
 
 ;; Load JSON Mode
 ;; (Associated files: .json)
@@ -475,12 +478,37 @@
   :hook
   (web-mode . lsp-deferred)
   (js-mode . lsp-deferred)
+  (css-mode . lsp-deferred)
   (json-mode . lsp-deferred)
   (gdscript-mode . lsp-deferred)
   (rust-mode . lsp-deferred)
+  :custom
+  (lsp-signature-auto-activate nil)
+  (lsp-signature-render-documentation nil)
+  (lsp-eldoc-hook nil)
   :commands
   (lsp
    lsp-deferred))
+
+;; Load LSP UI
+(use-package lsp-ui
+  :custom
+  (lsp-ui-imenu-enable nil)
+  (lsp-ui-peek-enable t)
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-max-width 50)
+  (lsp-ui-doc-max-height 10)
+  (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-header t)
+  (lsp-ui-doc-include-signature t)
+  :config
+  (setq lsp-ui-doc-border (face-background 'lsp-ui-doc-background))
+  :bind
+  (:map lsp-ui-mode-map
+   ("M-," . (lambda () (interactive) (lsp-ui-doc-mode t) (lsp-ui-doc-glance) (lsp-ui-doc-mode nil)))
+   ("M-." . lsp-ui-peek-find-definitions)
+   ("M-?" . lsp-ui-peek-find-references)))
 
 ;;====================
 ;; Package-Lint (Elisp Package Linter)
@@ -503,6 +531,8 @@
   :hook
   (prog-mode . flycheck-mode)
   (c++-mode-hook . (lambda () (setq flycheck-clang-standard "c++17")))
+  :config
+  (advice-add 'flycheck-eslint-config-exists-p :override (lambda() t))
   :custom
   (flycheck-python-flake8-executable "flake8")
   (flycheck-python-pylint-executable "pylint")
