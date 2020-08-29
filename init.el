@@ -184,7 +184,9 @@
        (concat "xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT dark -id " winid)))
     (tool-bar-mode 0)
     (scroll-bar-mode 0)
-    (when (not init-file/theme-loaded)
+    (when (and
+           (daemonp)
+           (not init-file/theme-loaded))
       (load-theme 'mood-one t)
       (setq init-file/theme-loaded t))))
 
@@ -375,6 +377,8 @@
 
 ;; Load "mood-one"
 (use-package mood-one-theme
+  :after
+  (solaire-mode)
   :demand
   t
   :config
