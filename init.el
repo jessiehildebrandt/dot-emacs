@@ -639,6 +639,7 @@
 ;;====================
 
 ;; Bindings:
+;; [ C-c w ] -> (Overwritten) Do nothing (neotree-mode)
 ;; [ F5 ]    -> (Overwritten) Do nothing (neotree-mode)
 ;; [ F6 ]    -> (Overwritten) Do nothing (neotree-mode)
 ;; [ F7 ]    -> (Overwritten) Do nothing (neotree-mode)
@@ -666,6 +667,7 @@
   (([f8] . neotree-toggle)
    ("C-c t" . neotree)
    :map neotree-mode-map
+   ("C-c w" . (lambda () (interactive) nil))
    ([f5] . (lambda () (interactive) nil))
    ([f6] . (lambda () (interactive) nil))
    ([f7] . (lambda () (interactive) nil))))
