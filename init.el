@@ -174,6 +174,7 @@
 ;;====================
 
 ;; Define a function that will configure new Emacs frames.
+(defvar init-file/theme-loaded nil "Whether or not the theme has been loaded yet.")
 (defun configure-new-frame (frame)
   "Configure new frame FRAME."
   (when (display-graphic-p frame)
@@ -182,10 +183,12 @@
       (call-process-shell-command
        (concat "xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT dark -id " winid)))
     (tool-bar-mode 0)
-    (scroll-bar-mode 0))
-  (load-theme 'mood-one t))
+    (scroll-bar-mode 0)
+    (when (not init-file/theme-loaded)
+      (load-theme 'mood-one t)
+      (setq init-file/theme-loaded t))))
 
-;; Define a function that will inhibit startup message for new Emacs frames.
+;; Define a function that will inhibit startup messages for new Emacs frames.
 (defun inhibit-new-frame-message ()
   "Inhibit startup messages in new frames."
   (setq inhibit-message t)
@@ -391,6 +394,28 @@
   t
   :config
   (mood-line-mode))
+
+;;====================
+;; Solaire-Mode
+;;====================
+
+;; Load "solaire-mode"
+(use-package solaire-mode
+  :demand
+  t
+  :custom
+  (solaire-mode-themes-to-face-swap '("mood-one"))
+  (solaire-mode-remap-modeline nil)
+  (solaire-mode-real-buffer-fn
+   (lambda ()
+     (and (not (string-equal major-mode "neotree-mode"))
+          (buffer-name (buffer-base-buffer))
+          (not (string-match "\*Echo Area" (buffer-name (buffer-base-buffer)))))))
+  :hook
+  (change-major-mode-hook . turn-on-solaire-mode)
+  (term-mode . (lambda () (set-face-background 'term (face-background 'solaire-default-face))))
+  :config
+  (solaire-global-mode t))
 
 ;;========================================
 ;;
