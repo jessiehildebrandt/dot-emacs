@@ -62,7 +62,8 @@
 (setq-default
  initial-scratch-message ""          ; Remove initial message
  frame-title-format '("Emacs - %b")  ; Window title formatting
- truncate-lines 1                    ; Truncate lines instead of wrapping
+ truncate-lines t                    ; Truncate lines instead of wrapping
+ message-truncate-lines t            ; Truncate messages in the echo area
  inhibit-startup-screen t            ; Don't show startup screen
  inhibit-splash-screen t             ; Don't show splash screen
  x-gtk-use-system-tooltips nil       ; Don't use system tooltips
@@ -162,6 +163,8 @@
 
 ;; Mode Configuration
 (setq
+ ido-max-prospects 8              ; (ido-mode) - Limit max on-screen matches to 8 items
+ ido-max-window-height 10         ; (ido-mode) - Limit max minibuffer height to 10 lines
  show-paren-delay 0.0             ; (show-paren-mode) - Parenthesis highlighting delay
  visual-line-fringe-indicators t  ; (visual-line-mode) - Shows fringe indicators for wrapping
  )
@@ -569,6 +572,8 @@
 (use-package smex
   :config
   (smex-initialize)
+  :custom
+  (smex-prompt-string "Cmd: ")
   :bind
   ("M-x" . smex))
 
@@ -773,7 +778,8 @@
   :config
   (ido-vertical-mode t)
   :custom
-  (ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
+  (ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
+  (ido-vertical-indicator "→"))
 
 ;;====================
 ;; Flx-Ido (Ido Fuzzy Matching)
@@ -785,6 +791,21 @@
   t
   :config
   (flx-ido-mode t))
+
+;;====================
+;; Swiper (Inline Search w/ Overview)
+;;====================
+
+(use-package swiper
+  :demand
+  t
+  :custom
+  (ivy-dynamic-exhibit-delay-ms 250)
+  (ivy-count-format "")
+  (swiper-include-line-number-in-search t)
+  :bind
+  ("C-s" . swiper)
+  ("C-r" . swiper-backward))
 
 ;;====================
 ;; Anzu (Search Mode Info Display)
