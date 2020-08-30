@@ -608,6 +608,17 @@
   (company))
 
 ;;====================
+;; yasnippet (Snippet Insertion/Completion)
+;;====================
+
+;; Load yasnippet
+(use-package yasnippet
+  :demand
+  t
+  :config
+  (yas-global-mode t))
+
+;;====================
 ;; Projectile (Project Interaction)
 ;;====================
 
