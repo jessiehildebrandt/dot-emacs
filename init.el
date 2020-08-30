@@ -537,7 +537,7 @@
   (setq lsp-ui-doc-border (face-background 'lsp-ui-doc-background))
   :bind
   (:map lsp-ui-mode-map
-   ("M-," . (lambda () (interactive) (lsp-ui-doc-mode t) (lsp-ui-doc-glance) (lsp-ui-doc-mode nil)))
+   ("M-," . lsp-ui-doc-mode)
    ("M-." . lsp-ui-peek-find-definitions)
    ("M-?" . lsp-ui-peek-find-references)))
 
