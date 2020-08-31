@@ -530,7 +530,8 @@
   (lsp-ui-doc-enable nil)
   (lsp-ui-doc-max-width 50)
   (lsp-ui-doc-max-height 10)
-  (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-position 'top)
+  (lsp-ui-doc-alignment 'window)
   (lsp-ui-doc-header t)
   (lsp-ui-doc-include-signature t)
   :config
@@ -615,6 +616,9 @@
 (use-package yasnippet
   :demand
   t
+  :custom
+  (yas-also-auto-indent-first-line t)
+  (yas-also-indent-empty-lines t)
   :config
   (yas-global-mode t))
 
@@ -844,7 +848,7 @@
   (ido-vertical-mode t)
   :custom
   (ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
-  (ido-vertical-indicator "→"))
+  (ido-vertical-indicator " →"))
 
 ;;====================
 ;; Flx-Ido (Ido Fuzzy Matching)
