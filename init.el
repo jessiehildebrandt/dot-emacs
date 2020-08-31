@@ -767,15 +767,6 @@
    ("C-c C-<" . mc/mark-all-like-this)))
 
 ;;====================
-;; Rainbow Mode (Colorize Colors)
-;;====================
-
-;; Load Rainbow-Mode
-(use-package rainbow-mode
-  :hook
-  ((html-mode css-mode) . rainbow-mode))
-
-;;====================
 ;; Rainbow-Delimiters (Delimiter Highlighting)
 ;;====================
 
