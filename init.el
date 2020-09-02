@@ -384,6 +384,7 @@
   :demand
   t
   :config
+  (mood-one-theme-arrow-fringe-bmp-enable)
   (setq diff-hl-fringe-bmp-function #'mood-one-theme-diff-hl-fringe-bmp-function)
   (eval-after-load 'flycheck #'mood-one-theme-flycheck-fringe-bmp-enable)
   (eval-after-load 'flymake #'mood-one-theme-flymake-fringe-bmp-enable)
