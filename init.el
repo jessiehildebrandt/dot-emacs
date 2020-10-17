@@ -445,8 +445,7 @@
 
 ;; Load Web Mode
 ;; (Associated files: .php, .html)
-;; (In js-mode: .ts)
-;; (In js-jsx-mode: .jsx, .tsx)
+;; (In js-jsx-mode: .jsx)
 (use-package web-mode
   :custom
   (web-mode-markup-indent-offset 2)
@@ -454,8 +453,13 @@
   :mode
   (("\\.php\\'" . web-mode)
    ("\\.html\\'" . web-mode)
-   ("\\.ts\\'" . js-mode)
-   ("\\.[jt]sx\\'" . js-jsx-mode)))
+   ("\\.jsx\\'" . js-jsx-mode)))
+
+;; Load TypeScript mode
+;; (Associated files: .ts, .tsx)
+(use-package typescript-mode
+  :mode
+  (("\\.tsx?\\'" . typescript-mode)))
 
 ;; Load JSON Mode
 ;; (Associated files: .json)
@@ -505,11 +509,12 @@
 ;;====================
 
 ;; Load LSP Mode
-;; Associated languages: HTML, JavaScript, JSON, GDScript, Rust
+;; Associated languages: HTML, JavaScript, TypeScript, CSS, JSON, GDScript, Rust
 (use-package lsp-mode
   :hook
   (web-mode . lsp-deferred)
   (js-mode . lsp-deferred)
+  (typescript-mode . lsp-deferred)
   (css-mode . lsp-deferred)
   (json-mode . lsp-deferred)
   (gdscript-mode . lsp-deferred)
