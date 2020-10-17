@@ -375,7 +375,7 @@
 ;; Set up styling for the default face.
 (set-face-attribute 'default nil
                     :family "Roboto Mono"
-                    :height 90)
+                    :height 100)
 
 ;;====================
 ;; Theme
