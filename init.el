@@ -297,9 +297,13 @@
       (lisp-interaction-mode))))
 
 (defun open-default-shell ()
-  "Opens the default system shell in a terminal emulator."
+  "Opens the default system shell in a terminal emulator, opening existing shell session if present."
   (interactive)
-  (term shell-file-name))
+  (if (get-buffer "*terminal*")
+      (switch-to-buffer "*terminal*")
+    (progn
+      (ansi-term shell-file-name)
+      (rename-buffer "*terminal*"))))
 
 ;; Set up all custom bindings (non-package-specific)
 (bind-keys ([f6] . visual-line-mode)
