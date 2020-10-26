@@ -114,6 +114,9 @@
     (setq default-directory (getenv "USERPROFILE"))
   (setq default-directory "~/"))
 
+;; Disable the default terminal bell.
+(setq ring-bell-function 'ignore)
+
 ;; Disable some unnecessary byte compilation warnings.
 (setq byte-compile-warnings '(not
                               free-vars
