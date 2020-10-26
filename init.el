@@ -54,7 +54,7 @@
 ;; Collect all garbage whenever the focus changes to/from Emacs.
 (if (>= emacs-major-version 27)
     (add-function :after after-focus-change-function #'garbage-collect)
-  (add-hook 'focus-out-hook #'garbage-collect))
+  (with-no-warnings (add-hook 'focus-out-hook #'garbage-collect)))
 
 ;;====================
 ;; Variables/Basic Config.
