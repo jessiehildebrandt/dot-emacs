@@ -374,7 +374,7 @@
 
 ;; Set up styling for the default face.
 (set-face-attribute 'default nil
-                    :family "Roboto Mono"
+                    :family "Fira Code Regular"
                     :height 100)
 
 ;;====================
