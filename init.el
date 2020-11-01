@@ -486,6 +486,11 @@
   :mode
   ("\\.fish\\'" . fish-mode))
 
+;; Load Docker Mode
+(use-package dockerfile-mode
+  :mode
+  ("\\Dockerfile\\'" . dockerfile-mode))
+
 ;; Load C Sharp Mode
 ;; (Associated files: .cs)
 (use-package csharp-mode
