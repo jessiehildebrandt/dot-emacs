@@ -377,13 +377,17 @@
 ;;========================================
 
 ;;====================
-;; Default Face
+;; Font Configuration
 ;;====================
 
 ;; Set up styling for the default face.
 (set-face-attribute 'default nil
                     :family "Fira Code Regular"
                     :height 100)
+
+;; Ensure that the monocolor "Symbola" font can be used for emoji and unicode symbols.
+;; (Emacs 27+ on some systems may not have a monocolor fallback font set after multicolor emoji fonts.)
+(set-fontset-font t 'symbol "Symbola" nil 'append)
 
 ;;====================
 ;; Theme
