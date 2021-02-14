@@ -236,6 +236,11 @@
   ;; Manually assemble the load-path during startup to save time.
   (setq load-path (append load-path (directory-files package-user-dir t "^[^.]" t))))
 
+;; Prepare a stupid hack to fix an issue with use-package in byte-compiled code on some systems. (Emacs 27+)
+(deftheme use-package)
+(enable-theme 'use-package)
+(setq custom-enabled-themes (remq 'use-package custom-enabled-themes))
+
 ;; Initialize the package management system (only at compile time).
 (eval-when-compile
 
